@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LeadGen Efficiency Calculator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="bg-orb orb-a" aria-hidden="true"></div>
+  <div class="bg-orb orb-b" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <header class="hero">
+      <p class="eyebrow">hsbcad</p>
+      <h1>Estimate Your Team's Efficiency Gains</h1>
+      <p class="subtitle">
+        Fill in your production numbers, add your details, and instantly get projected impact.
+      </p>
+    </header>
+
+    <section id="step-1" class="card is-active" aria-labelledby="step-1-title">
+      <div class="card-head">
+        <span class="step-chip">Step 1 of 2</span>
+        <h2 id="step-1-title">Business Inputs</h2>
+      </div>
+
+      <form id="business-form" novalidate>
+        <div class="grid">
+          <label class="field">
+            <span>Number of designers</span>
+            <div class="range-control">
+              <input type="range" id="designers" min="0" max="50" step="1" value="6" required />
+              <input type="number" id="designersNumber" min="0" max="50" step="1" value="6" class="range-number" aria-label="Number of designers value" />
+            </div>
+            <small class="error" data-error-for="designers"></small>
+          </label>
+
+          <label class="field">
+            <span>Number of CNC machines</span>
+            <div class="range-control">
+              <input type="range" id="cncMachines" min="0" max="40" step="1" value="4" required />
+              <input type="number" id="cncMachinesNumber" min="0" max="40" step="1" value="4" class="range-number" aria-label="Number of CNC machines value" />
+            </div>
+            <small class="error" data-error-for="cncMachines"></small>
+          </label>
+
+          <label class="field">
+            <span>Number of work stations</span>
+            <div class="range-control">
+              <input type="range" id="workStations" min="0" max="100" step="1" value="12" required />
+              <input type="number" id="workStationsNumber" min="0" max="100" step="1" value="12" class="range-number" aria-label="Number of work stations value" />
+            </div>
+            <small class="error" data-error-for="workStations"></small>
+          </label>
+
+          <label class="field">
+            <span>Number of projects per year</span>
+            <input type="number" id="projectsPerYear" min="0" step="1" required placeholder="e.g. 120" />
+            <small class="error" data-error-for="projectsPerYear"></small>
+          </label>
+
+          <label class="field">
+            <span>Number of paper prints per project</span>
+            <input type="number" id="paperPrintsPerProject" min="0" step="1" required placeholder="e.g. 18" />
+            <small class="error" data-error-for="paperPrintsPerProject"></small>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="submit" class="btn primary">Continue</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="step-2" class="card" aria-labelledby="step-2-title">
+      <div class="card-head">
+        <span class="step-chip">Step 2 of 2</span>
+        <h2 id="step-2-title">Access Your Results</h2>
+      </div>
+
+      <form id="contact-form" novalidate>
+        <div class="grid">
+          <label class="field">
+            <span>Name</span>
+            <input type="text" id="name" required placeholder="First name" />
+            <small class="error" data-error-for="name"></small>
+          </label>
+
+          <label class="field">
+            <span>Last name</span>
+            <input type="text" id="lastName" required placeholder="Last name" />
+            <small class="error" data-error-for="lastName"></small>
+          </label>
+
+          <label class="field">
+            <span>Company name</span>
+            <input type="text" id="companyName" required placeholder="Company" />
+            <small class="error" data-error-for="companyName"></small>
+          </label>
+
+          <label class="field">
+            <span>Email</span>
+            <input type="email" id="email" required placeholder="name@company.com" />
+            <small class="error" data-error-for="email"></small>
+          </label>
+
+          <label class="field">
+            <span>Country</span>
+            <input type="text" id="country" required placeholder="Country" />
+            <small class="error" data-error-for="country"></small>
+          </label>
+
+          <label class="field">
+            <span>Industry</span>
+            <input type="text" id="industry" required placeholder="Industry" />
+            <small class="error" data-error-for="industry"></small>
+          </label>
+
+          <label class="field">
+            <span>Job title</span>
+            <input type="text" id="jobTitle" required placeholder="Job title" />
+            <small class="error" data-error-for="jobTitle"></small>
+          </label>
+        </div>
+
+        <div class="actions">
+          <button type="button" id="back-button" class="btn ghost">Back</button>
+          <button type="submit" class="btn primary">View Results</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="results" class="card" aria-labelledby="results-title">
+      <div class="card-head">
+        <span class="step-chip">Results</span>
+        <h2 id="results-title">Your Estimated Impact</h2>
+      </div>
+
+      <p class="result-intro" id="result-intro"></p>
+
+      <div class="results-grid">
+        <article class="result-card">
+          <p class="result-label">Time saved</p>
+          <p class="result-value" id="timeSaved">0%</p>
+        </article>
+
+        <article class="result-card">
+          <p class="result-label">Additional projects per year</p>
+          <p class="result-value" id="moreProjects">0</p>
+        </article>
+
+        <article class="result-card">
+          <p class="result-label">Paper prints eliminated</p>
+          <p class="result-value" id="printsEliminated">0</p>
+        </article>
+
+        <article class="result-card">
+          <p class="result-label">Efficiency boost</p>
+          <p class="result-value" id="efficiencyBoost">0%</p>
+        </article>
+      </div>
+
+      <div class="actions">
+        <button type="button" id="restart-button" class="btn primary">Ready to put a number on it? →</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
