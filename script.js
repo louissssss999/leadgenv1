@@ -33,13 +33,23 @@ function syncSliderValues() {
   Object.keys(sliderNumberFields).forEach((key) => {
     if (fields[key] && sliderNumberFields[key]) {
       sliderNumberFields[key].value = fields[key].value;
+      updateSliderVisual(fields[key]);
     }
   });
+}
+
+function updateSliderVisual(rangeInput) {
+  const min = Number(rangeInput.min || 0);
+  const max = Number(rangeInput.max || 100);
+  const value = Number(rangeInput.value || min);
+  const ratio = max > min ? ((value - min) / (max - min)) * 100 : 0;
+  rangeInput.style.setProperty("--range-progress", `${ratio}%`);
 }
 
 ["designers", "cncMachines", "workStations"].forEach((key) => {
   fields[key].addEventListener("input", () => {
     sliderNumberFields[key].value = fields[key].value;
+    updateSliderVisual(fields[key]);
   });
 
   sliderNumberFields[key].addEventListener("input", () => {
@@ -53,6 +63,7 @@ function syncSliderValues() {
 
     const clamped = Math.min(max, Math.max(min, Math.round(parsed)));
     fields[key].value = String(clamped);
+    updateSliderVisual(fields[key]);
   });
 
   sliderNumberFields[key].addEventListener("blur", () => {
@@ -62,6 +73,7 @@ function syncSliderValues() {
     const clamped = Number.isFinite(parsed) ? Math.min(max, Math.max(min, Math.round(parsed))) : Number(fields[key].value);
     fields[key].value = String(clamped);
     sliderNumberFields[key].value = String(clamped);
+    updateSliderVisual(fields[key]);
   });
 });
 
