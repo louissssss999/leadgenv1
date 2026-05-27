@@ -4,6 +4,8 @@ const contactForm = document.getElementById("contact-form");
 const stepOne = document.getElementById("step-1");
 const stepTwo = document.getElementById("step-2");
 const resultsSection = document.getElementById("results");
+const timelineSteps = Array.from(document.querySelectorAll(".timeline-step"));
+const timelineLines = Array.from(document.querySelectorAll(".timeline-line"));
 
 const backButton = document.getElementById("back-button");
 const restartButton = document.getElementById("restart-button");
@@ -22,15 +24,21 @@ const fields = {
   email: document.getElementById("email"),
   country: document.getElementById("country"),
   industry: document.getElementById("industry"),
+  otherIndustry: document.getElementById("otherIndustry"),
+  nonSoftwareUniversityDetail: document.getElementById("nonSoftwareUniversityDetail"),
   jobTitle: document.getElementById("jobTitle")
 };
 
 const otherDesignPlatformField = document.getElementById("otherDesignPlatformField");
+const nonSoftwareUniversityField = document.getElementById("nonSoftwareUniversityField");
+const otherIndustryField = document.getElementById("otherIndustryField");
 
 const sliderNumberFields = {
   designers: document.getElementById("designersNumber"),
   cncMachines: document.getElementById("cncMachinesNumber"),
-  workStations: document.getElementById("workStationsNumber")
+  workStations: document.getElementById("workStationsNumber"),
+  projectsPerYear: document.getElementById("projectsPerYearNumber"),
+  paperPrintsPerProject: document.getElementById("paperPrintsPerProjectNumber")
 };
 
 function toggleOtherDesignPlatformField() {
@@ -43,6 +51,55 @@ function toggleOtherDesignPlatformField() {
     fields.otherDesignPlatform.value = "";
     showError("otherDesignPlatform", "");
   }
+
+  markRequiredFieldLabels();
+}
+
+function toggleNonSoftwareUniversityField() {
+  const selectedIndustry = fields.industry.value;
+  const shouldShow =
+    selectedIndustry !== "" &&
+    selectedIndustry !== "Software" &&
+    selectedIndustry !== "University";
+
+  nonSoftwareUniversityField.hidden = !shouldShow;
+  fields.nonSoftwareUniversityDetail.required = shouldShow;
+
+  if (!shouldShow) {
+    fields.nonSoftwareUniversityDetail.value = "";
+    showError("nonSoftwareUniversityDetail", "");
+  }
+
+  markRequiredFieldLabels();
+}
+
+function toggleOtherIndustryField() {
+  const useOtherIndustry = fields.industry.value === "Other";
+
+  otherIndustryField.hidden = !useOtherIndustry;
+  fields.otherIndustry.required = useOtherIndustry;
+
+  if (!useOtherIndustry) {
+    fields.otherIndustry.value = "";
+    showError("otherIndustry", "");
+  }
+
+  markRequiredFieldLabels();
+}
+
+function markRequiredFieldLabels() {
+  document.querySelectorAll(".field").forEach((fieldElement) => {
+    const label = fieldElement.querySelector(":scope > span");
+    if (!label) {
+      return;
+    }
+
+    const hasRequiredControl = Boolean(
+      fieldElement.querySelector("input[required], select[required], textarea[required]")
+    );
+
+    label.classList.toggle("is-required", hasRequiredControl);
+  });
 }
 
 const countriesWithCodes = [
@@ -250,6 +307,38 @@ function showSection(section) {
   });
 
   section.classList.add("is-active");
+  updateTimeline(section);
+}
+
+function getSectionIndex(section) {
+  if (section === stepOne) {
+    return 1;
+  }
+
+  if (section === stepTwo) {
+    return 2;
+  }
+
+  return 3;
+}
+
+function updateTimeline(activeSection) {
+  const activeIndex = getSectionIndex(activeSection);
+
+  timelineSteps.forEach((stepElement) => {
+    const stepIndex = Number(stepElement.dataset.step);
+    stepElement.classList.remove("is-active", "is-done");
+
+    if (stepIndex < activeIndex) {
+      stepElement.classList.add("is-done");
+    } else if (stepIndex === activeIndex) {
+      stepElement.classList.add("is-active");
+    }
+  });
+
+  timelineLines.forEach((lineElement, lineIdx) => {
+    lineElement.classList.toggle("is-done", lineIdx < activeIndex - 1);
+  });
 }
 
 function showError(fieldId, message) {
@@ -344,7 +433,7 @@ function updateSliderVisual(rangeInput) {
   rangeInput.style.setProperty("--range-progress", `${ratio}%`);
 }
 
-["designers", "cncMachines", "workStations"].forEach((key) => {
+["designers", "cncMachines", "workStations", "projectsPerYear", "paperPrintsPerProject"].forEach((key) => {
   fields[key].addEventListener("input", () => {
     sliderNumberFields[key].value = fields[key].value;
     updateSliderVisual(fields[key]);
@@ -405,9 +494,19 @@ function calculateResults(input) {
 
 syncSliderValues();
 toggleOtherDesignPlatformField();
+toggleNonSoftwareUniversityField();
+toggleOtherIndustryField();
+markRequiredFieldLabels();
+const initiallyActiveSection = document.querySelector(".card.is-active");
+updateTimeline(initiallyActiveSection || stepOne);
 
 fields.currentDesignPlatform.addEventListener("change", () => {
   toggleOtherDesignPlatformField();
+});
+
+fields.industry.addEventListener("change", () => {
+  toggleNonSoftwareUniversityField();
+  toggleOtherIndustryField();
 });
 
 businessForm.addEventListener("submit", (event) => {
@@ -479,6 +578,25 @@ contactForm.addEventListener("submit", (event) => {
     }
   });
 
+  if (fields.nonSoftwareUniversityDetail.required) {
+    const detailMessage = validateRequiredChoice(
+      fields.nonSoftwareUniversityDetail,
+      "Organization type"
+    );
+    if (detailMessage) {
+      showError("nonSoftwareUniversityDetail", detailMessage);
+      hasError = true;
+    }
+  }
+
+  if (fields.otherIndustry.required) {
+    const otherIndustryMessage = validateText(fields.otherIndustry, "Other industry");
+    if (otherIndustryMessage) {
+      showError("otherIndustry", otherIndustryMessage);
+      hasError = true;
+    }
+  }
+
   const emailMessage = validateEmail(fields.email);
   if (emailMessage) {
     showError("email", emailMessage);
@@ -504,7 +622,7 @@ contactForm.addEventListener("submit", (event) => {
   const result = calculateResults(businessData);
 
   document.getElementById("result-intro").textContent =
-    `Thanks ${fields.name.value.trim()} ${fields.lastName.value.trim()} from ${fields.companyName.value.trim()}. Here is your estimated yearly impact.`;
+    `Thank you ${fields.name.value.trim()} ${fields.lastName.value.trim()}. Here is your estimation for ${fields.companyName.value.trim()}.`;
 
   document.getElementById("timeSaved").textContent = `${result.timeSavedPercentage}%`;
   document.getElementById("moreProjects").textContent = Number.isInteger(result.moreProjects)
@@ -520,7 +638,10 @@ restartButton.addEventListener("click", () => {
   businessForm.reset();
   contactForm.reset();
   toggleOtherDesignPlatformField();
+  toggleNonSoftwareUniversityField();
+  toggleOtherIndustryField();
   syncSliderValues();
+  markRequiredFieldLabels();
   clearErrors(businessForm);
   clearErrors(contactForm);
   showSection(stepOne);
