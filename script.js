@@ -9,6 +9,10 @@ const timelineLines = Array.from(document.querySelectorAll(".timeline-line"));
 
 const backButton = document.getElementById("back-button");
 const restartButton = document.getElementById("restart-button");
+const confirmationModal = document.getElementById("confirmationModal");
+const confirmationBackdrop = document.getElementById("confirmationBackdrop");
+const confirmationMessage = document.getElementById("confirmationMessage");
+const confirmationCloseButton = document.getElementById("confirmationCloseButton");
 
 const fields = {
   designers: document.getElementById("designers"),
@@ -341,6 +345,16 @@ function updateTimeline(activeSection) {
   });
 }
 
+function openConfirmationModal() {
+  const firstName = fields.name.value.trim() || "there";
+  confirmationMessage.textContent = `Thank you ${firstName}! The hsbcad team will contact you shortly.`;
+  confirmationModal.hidden = false;
+}
+
+function closeConfirmationModal() {
+  confirmationModal.hidden = true;
+}
+
 function showError(fieldId, message) {
   const errorElement = document.querySelector(`[data-error-for="${fieldId}"]`);
   if (errorElement) {
@@ -564,13 +578,16 @@ contactForm.addEventListener("submit", (event) => {
     ["companyName", "Company name"],
     ["country", "Country"],
     ["industry", "Industry"],
-    ["jobTitle", "Job title"]
+    ["jobTitle", "Job function"]
   ];
 
   let hasError = false;
 
   requiredTextFields.forEach(([key, label]) => {
-    const validator = key === "country" || key === "industry" ? validateRequiredChoice : validateText;
+    const validator =
+      key === "country" || key === "industry" || key === "jobTitle"
+        ? validateRequiredChoice
+        : validateText;
     const message = validator(fields[key], label);
     if (message) {
       showError(key, message);
@@ -635,14 +652,19 @@ contactForm.addEventListener("submit", (event) => {
 });
 
 restartButton.addEventListener("click", () => {
-  businessForm.reset();
-  contactForm.reset();
-  toggleOtherDesignPlatformField();
-  toggleNonSoftwareUniversityField();
-  toggleOtherIndustryField();
-  syncSliderValues();
-  markRequiredFieldLabels();
-  clearErrors(businessForm);
-  clearErrors(contactForm);
-  showSection(stepOne);
+  openConfirmationModal();
+});
+
+confirmationCloseButton.addEventListener("click", () => {
+  closeConfirmationModal();
+});
+
+confirmationBackdrop.addEventListener("click", () => {
+  closeConfirmationModal();
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && !confirmationModal.hidden) {
+    closeConfirmationModal();
+  }
 });

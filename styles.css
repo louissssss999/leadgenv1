@@ -35,6 +35,19 @@ body {
   overflow-x: hidden;
 }
 
+html,
+body {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
 h1,
 h2,
 .result-value {
@@ -274,6 +287,16 @@ select {
   background-size: 14px 9px;
 }
 
+#currentDesignPlatform {
+  min-height: 40px;
+  padding-top: 7px;
+  padding-bottom: 7px;
+}
+
+#otherDesignPlatformField {
+  grid-column: 2;
+}
+
 input:focus,
 select:focus {
   border-color: #e2e8df;
@@ -411,6 +434,80 @@ input[type="range"]::-moz-range-thumb {
   flex-wrap: wrap;
 }
 
+.results-cta-question {
+  margin: 0;
+  align-self: center;
+  color: #eef8ee;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.confirmation-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+}
+
+.confirmation-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 33, 12, 0.42);
+}
+
+.confirmation-dialog {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 460px);
+  background: #ffffff;
+  color: #1f2733;
+  border-radius: 24px;
+  padding: 28px 24px 22px;
+  text-align: center;
+  box-shadow: 0 28px 60px rgba(18, 46, 22, 0.24);
+}
+
+.confirmation-check {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #5fbc58 0%, #2f7d32 100%);
+  position: relative;
+  box-shadow: 0 14px 30px rgba(47, 125, 50, 0.28);
+}
+
+.confirmation-check::after {
+  content: "";
+  position: absolute;
+  left: 24px;
+  top: 18px;
+  width: 16px;
+  height: 28px;
+  border-right: 4px solid #ffffff;
+  border-bottom: 4px solid #ffffff;
+  transform: rotate(40deg);
+}
+
+.confirmation-dialog h3 {
+  margin: 0 0 10px;
+  color: #1f5b24;
+  font-size: clamp(1.25rem, 2vw, 1.5rem);
+}
+
+.confirmation-message {
+  margin: 0 0 18px;
+  color: #415041;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.confirmation-dialog .btn {
+  min-width: 132px;
+}
+
 .btn {
   border: 0;
   border-radius: 12px;
@@ -447,7 +544,7 @@ input[type="range"]::-moz-range-thumb {
 
 .results-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
 }
 
@@ -602,6 +699,10 @@ input[type="range"]::-moz-range-thumb {
     min-width: 14px;
   }
 
+  #otherDesignPlatformField {
+    grid-column: auto;
+  }
+
   .grid,
   .results-grid {
     grid-template-columns: 1fr;
@@ -617,6 +718,11 @@ input[type="range"]::-moz-range-thumb {
 
   .actions {
     justify-content: stretch;
+  }
+
+  .results-cta-question {
+    width: 100%;
+    margin-bottom: 4px;
   }
 
   .btn {

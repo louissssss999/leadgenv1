@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20260527-6" />
+  <link rel="stylesheet" href="styles.css?v=20260528-1" />
 </head>
 <body>
   <div class="bg-orb orb-a" aria-hidden="true"></div>
@@ -79,7 +79,7 @@
             <small class="error" data-error-for="paperPrintsPerProject"></small>
           </label>
 
-          <label class="field full-row">
+          <label class="field">
             <span>Current design platform</span>
             <select id="currentDesignPlatform" required>
               <option value="" selected disabled>Select platform</option>
@@ -90,7 +90,7 @@
             <small class="error" data-error-for="currentDesignPlatform"></small>
           </label>
 
-          <label class="field full-row" id="otherDesignPlatformField" hidden>
+          <label class="field" id="otherDesignPlatformField" hidden>
             <span>Other</span>
             <input type="text" id="otherDesignPlatform" placeholder="Type your design platform" />
             <small class="error" data-error-for="otherDesignPlatform"></small>
@@ -366,6 +366,24 @@
             <span>Company specialization</span>
             <select id="nonSoftwareUniversityDetail">
               <option value="">Select one option</option>
+              <option value="Timberframe">Timberframe</option>
+              <option value="Light Gauge Steel">Light Gauge Steel</option>
+              <option value="Mass Timber (CLT, Glulam, LVL)">Mass Timber (CLT, Glulam, LVL)</option>
+              <option value="Modular / Volumetric Construction">Modular / Volumetric Construction</option>
+              <option value="Roof Trusses &amp; Joists">Roof Trusses &amp; Joists</option>
+              <option value="Hybrid/Mixed Systems - SIPs">Hybrid/Mixed Systems - SIPs</option>
+              <option value="Log Construction">Log Construction</option>
+              <option value="Post &amp; Beam">Post &amp; Beam</option>
+              <option value="Design Engineering Services">Design Engineering Services</option>
+              <option value="Other">Other</option>
+            </select>
+            <small class="error" data-error-for="nonSoftwareUniversityDetail"></small>
+          </label>
+
+          <label class="field">
+            <span>Job function</span>
+            <select id="jobTitle" required>
+              <option value="">Select job function</option>
               <option value="Production/Operations Manager">Production/Operations Manager</option>
               <option value="CAD/BIM Designer">CAD/BIM Designer</option>
               <option value="BIM/CAD Manager">BIM/CAD Manager</option>
@@ -380,12 +398,6 @@
               <option value="Professor">Professor</option>
               <option value="Other">Other</option>
             </select>
-            <small class="error" data-error-for="nonSoftwareUniversityDetail"></small>
-          </label>
-
-          <label class="field">
-            <span>Job title</span>
-            <input type="text" id="jobTitle" required placeholder="Job title" />
             <small class="error" data-error-for="jobTitle"></small>
           </label>
         </div>
@@ -431,11 +443,22 @@
       </div>
 
       <div class="actions">
+        <p class="results-cta-question">Do you want to get your full ROI estimation?</p>
         <button type="button" id="restart-button" class="btn primary">Yes, I would like to talk to a specialist.</button>
       </div>
     </section>
   </main>
 
-  <script src="script.js?v=20260527-2"></script>
+  <div class="confirmation-modal" id="confirmationModal" hidden>
+    <div class="confirmation-backdrop" id="confirmationBackdrop"></div>
+    <div class="confirmation-dialog" role="dialog" aria-modal="true" aria-labelledby="confirmationTitle">
+      <div class="confirmation-check" aria-hidden="true"></div>
+      <h3 id="confirmationTitle">Request received</h3>
+      <p class="confirmation-message" id="confirmationMessage"></p>
+      <button type="button" id="confirmationCloseButton" class="btn primary">Close</button>
+    </div>
+  </div>
+
+  <script src="script.js?v=20260528-1"></script>
 </body>
 </html>
