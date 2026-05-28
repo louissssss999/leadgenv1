@@ -45,8 +45,10 @@ const sliderNumberFields = {
   paperPrintsPerProject: document.getElementById("paperPrintsPerProjectNumber")
 };
 
-const SUPABASE_URL = window.SUPABASE_URL || "https://YOUR-PROJECT.supabase.co";
-const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || "YOUR-ANON-KEY";
+const SUPABASE_URL = window.SUPABASE_URL || "https://umyquexisswctcsucghf.supabase.co";
+const SUPABASE_ANON_KEY =
+  window.SUPABASE_ANON_KEY ||
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVteXF1ZXhpc3N3Y3Rjc3VjZ2hmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMDIwMjEsImV4cCI6MjA5NTU3ODAyMX0.tYn2SsnKLwmWdoVssQKvNqFrhRpKKdAlZl6Je08KU_o";
 const SUPABASE_TABLE = "lead_submissions";
 
 const isSupabaseConfigured =
