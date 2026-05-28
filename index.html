@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=20260528-3" />
+  <link rel="stylesheet" href="styles.css?v=20260528-4" />
 </head>
 <body>
   <div class="bg-orb orb-a" aria-hidden="true"></div>
@@ -418,25 +418,25 @@
 
       <div class="results-grid">
         <article class="result-card result-card-stat">
-          <div class="stat-visual trend-up" aria-hidden="true"></div>
+          <div class="stat-visual stat-time-saved" aria-hidden="true"></div>
           <p class="result-value stat-value" id="timeSaved">0%</p>
           <p class="result-label stat-label">Time saved</p>
         </article>
 
         <article class="result-card result-card-stat">
-          <div class="stat-visual plus-mark" aria-hidden="true">+</div>
+          <div class="stat-visual stat-more-projects" aria-hidden="true"></div>
           <p class="result-value stat-value" id="moreProjects">0</p>
           <p class="result-label stat-label">Additional projects per year</p>
         </article>
 
         <article class="result-card result-card-stat">
-          <div class="stat-visual paper-mark" aria-hidden="true"></div>
+          <div class="stat-visual stat-no-paper" aria-hidden="true"></div>
           <p class="result-value stat-value" id="printsEliminated">0</p>
           <p class="result-label stat-label">Paper prints eliminated</p>
         </article>
 
         <article class="result-card result-card-stat">
-          <div class="stat-visual trend-up" aria-hidden="true"></div>
+          <div class="stat-visual stat-efficiency-boost" aria-hidden="true"></div>
           <p class="result-value stat-value" id="efficiencyBoost">0%</p>
           <p class="result-label stat-label">Efficiency boost</p>
         </article>
@@ -455,10 +455,11 @@
       <div class="confirmation-check" aria-hidden="true"></div>
       <h3 id="confirmationTitle">Request received</h3>
       <p class="confirmation-message" id="confirmationMessage"></p>
-      <button type="button" id="confirmationCloseButton" class="btn primary">Close</button>
+      <button type="button" id="confirmationCloseButton" class="btn confirmation-close-button">Close</button>
     </div>
   </div>
 
-  <script src="script.js?v=20260528-2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js?v=20260528-3"></script>
 </body>
 </html>

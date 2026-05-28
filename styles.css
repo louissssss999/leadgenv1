@@ -511,6 +511,18 @@ input[type="range"]::-moz-range-thumb {
   min-width: 132px;
 }
 
+.confirmation-close-button {
+  background: #2f7d32;
+  color: #ffffff;
+  border: 1px solid #2f7d32;
+  box-shadow: 0 10px 22px rgba(47, 125, 50, 0.22);
+}
+
+.confirmation-close-button:hover {
+  background: #256628;
+  border-color: #256628;
+}
+
 .btn {
   border: 0;
   border-radius: 12px;
@@ -590,83 +602,31 @@ input[type="range"]::-moz-range-thumb {
 
 .stat-visual {
   grid-area: icon;
-  width: 38px;
-  height: 38px;
+  width: 42px;
+  height: 42px;
   margin-bottom: 0;
   display: grid;
   place-items: center;
   align-self: center;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
 }
 
-.stat-visual.trend-up {
-  position: relative;
-  border-bottom: 2px solid #1f2733;
-  border-left: 2px solid #1f2733;
-  border-radius: 3px;
+.stat-time-saved {
+  background-image: url("timesaved.png");
 }
 
-.stat-visual.trend-up::before {
-  content: "";
-  position: absolute;
-  width: 24px;
-  height: 14px;
-  border-left: 3px solid #174a1d;
-  border-top: 3px solid #174a1d;
-  transform: rotate(30deg);
-  right: 4px;
-  top: 13px;
+.stat-more-projects {
+  background-image: url("more projects.png");
 }
 
-.stat-visual.trend-up::after {
-  content: "";
-  position: absolute;
-  border-top: 6px solid transparent;
-  border-bottom: 6px solid transparent;
-  border-left: 8px solid #174a1d;
-  right: 1px;
-  top: 3px;
-  transform: rotate(-18deg);
+.stat-no-paper {
+  background-image: url("nopaper.png");
 }
 
-.stat-visual.plus-mark {
-  border-radius: 50%;
-  border: 2px solid #1f2733;
-  color: #174a1d;
-  font-size: 1.7rem;
-  font-weight: 700;
-  line-height: 1;
-}
-
-.stat-visual.paper-mark {
-  position: relative;
-  width: 32px;
-  height: 38px;
-  border: 2px solid #1f2733;
-  border-radius: 4px;
-  background: #eef3ee;
-}
-
-.stat-visual.paper-mark::before {
-  content: "";
-  position: absolute;
-  top: -2px;
-  right: -2px;
-  width: 10px;
-  height: 10px;
-  background: #dce7dc;
-  border-left: 2px solid #1f2733;
-  border-bottom: 2px solid #1f2733;
-}
-
-.stat-visual.paper-mark::after {
-  content: "";
-  position: absolute;
-  left: 5px;
-  top: 12px;
-  width: 18px;
-  height: 2px;
-  background: #1f2733;
-  box-shadow: 0 6px 0 #1f2733, 0 12px 0 #1f2733;
+.stat-efficiency-boost {
+  background-image: url("efficiencyboost.png");
 }
 
 .result-card-stat .stat-value {

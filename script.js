@@ -45,6 +45,54 @@ const sliderNumberFields = {
   paperPrintsPerProject: document.getElementById("paperPrintsPerProjectNumber")
 };
 
+const SUPABASE_URL = window.SUPABASE_URL || "https://YOUR-PROJECT.supabase.co";
+const SUPABASE_ANON_KEY = window.SUPABASE_ANON_KEY || "YOUR-ANON-KEY";
+const SUPABASE_TABLE = "lead_submissions";
+
+const isSupabaseConfigured =
+  typeof window.supabase !== "undefined" &&
+  !SUPABASE_URL.includes("YOUR-PROJECT") &&
+  !SUPABASE_ANON_KEY.includes("YOUR-ANON-KEY");
+
+const supabaseClient = isSupabaseConfigured
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
+  : null;
+
+function requireFieldValue(value) {
+  if (value === null || value === undefined) {
+    return "";
+  }
+
+  return String(value).trim();
+}
+
+function getMissingPayloadFields(payload) {
+  return Object.entries(payload)
+    .filter(([, value]) => value === "" || value === null || value === undefined)
+    .map(([key]) => key);
+}
+
+async function saveLeadToSupabase(payload) {
+  if (!supabaseClient) {
+    return {
+      ok: false,
+      message:
+        "Supabase is not configured yet. Add SUPABASE_URL and SUPABASE_ANON_KEY in script.js."
+    };
+  }
+
+  const { error } = await supabaseClient.from(SUPABASE_TABLE).insert([payload]);
+
+  if (error) {
+    return {
+      ok: false,
+      message: `Supabase error: ${error.message}`
+    };
+  }
+
+  return { ok: true };
+}
+
 function toggleOtherDesignPlatformField() {
   const useOther = fields.currentDesignPlatform.value === "Other";
 
@@ -568,7 +616,7 @@ backButton.addEventListener("click", () => {
   showSection(stepOne);
 });
 
-contactForm.addEventListener("submit", (event) => {
+contactForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   clearErrors(contactForm);
 
@@ -637,6 +685,63 @@ contactForm.addEventListener("submit", (event) => {
   };
 
   const result = calculateResults(businessData);
+
+  const countryEntry = countriesWithCodes.find(([countryName]) => countryName === fields.country.value);
+  const countryCode = countryEntry ? countryEntry[1] : "";
+
+  const payload = {
+    submitted_at: new Date().toISOString(),
+    name: requireFieldValue(fields.name.value),
+    last_name: requireFieldValue(fields.lastName.value),
+    company_name: requireFieldValue(fields.companyName.value),
+    email: requireFieldValue(fields.email.value),
+    country: requireFieldValue(fields.country.value),
+    country_code: requireFieldValue(countryCode),
+    country_flag: requireFieldValue(toFlagEmoji(countryCode)),
+    industry: requireFieldValue(fields.industry.value),
+    industry_other: requireFieldValue(fields.otherIndustry.required ? fields.otherIndustry.value : "Not applicable"),
+    organization_type: requireFieldValue(
+      fields.nonSoftwareUniversityDetail.required
+        ? fields.nonSoftwareUniversityDetail.value
+        : "Not applicable"
+    ),
+    job_function: requireFieldValue(fields.jobTitle.value),
+    designers: Number(fields.designers.value),
+    cnc_machines: Number(fields.cncMachines.value),
+    work_stations: Number(fields.workStations.value),
+    projects_per_year: Number(fields.projectsPerYear.value),
+    paper_prints_per_project: Number(fields.paperPrintsPerProject.value),
+    current_design_platform: requireFieldValue(businessData.currentDesignPlatform),
+    time_saved_percentage: Number(result.timeSavedPercentage),
+    additional_projects_per_year: Number(result.moreProjects),
+    paper_prints_eliminated: Number(result.printsEliminated),
+    efficiency_boost_percentage: Number(result.efficiencyBoost)
+  };
+
+  const missingFields = getMissingPayloadFields(payload);
+  if (missingFields.length > 0) {
+    showError(
+      "email",
+      `Missing required payload fields: ${missingFields.join(", ")}`
+    );
+    return;
+  }
+
+  const submitButton = contactForm.querySelector('button[type="submit"]');
+  if (submitButton) {
+    submitButton.disabled = true;
+  }
+
+  const saveResult = await saveLeadToSupabase(payload);
+
+  if (submitButton) {
+    submitButton.disabled = false;
+  }
+
+  if (!saveResult.ok) {
+    showError("email", saveResult.message);
+    return;
+  }
 
   document.getElementById("result-intro").textContent =
     `Thank you ${fields.name.value.trim()} ${fields.lastName.value.trim()}. Here is your estimation for ${fields.companyName.value.trim()}.`;
