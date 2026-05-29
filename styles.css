@@ -31,7 +31,6 @@ body {
   font-family: "Open Sans", "Segoe UI", sans-serif;
   color: var(--text);
   background: #4c9a45;
-  min-height: 100vh;
   overflow-x: hidden;
 }
 
@@ -74,9 +73,9 @@ h2,
 .app-shell {
   width: 100%;
   max-width: none;
-  margin: 24px 0 34px;
-  padding: 0 clamp(28px, 6vw, 92px);
-  background: transparent !important;
+  margin: 24px 0 0;
+  padding: 0 clamp(28px, 6vw, 92px) 12px;
+  background: #4c9a45 !important;
   border: 0 !important;
   box-shadow: none !important;
   outline: 0 !important;
@@ -96,7 +95,7 @@ h2,
   align-items: center;
   width: 100%;
   margin-left: 0;
-  padding: 0 clamp(10px, 1.2vw, 18px);
+  padding: 0;
   box-sizing: border-box;
   gap: 10px;
   margin-bottom: 22px;
@@ -434,6 +433,7 @@ input[type="range"]::-moz-range-thumb {
   justify-content: flex-end;
   gap: 12px;
   margin-top: 8px;
+  margin-bottom: 10px;
   flex-wrap: wrap;
 }
 
@@ -611,6 +611,8 @@ input[type="range"]::-moz-range-thumb {
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
+  filter: brightness(0) saturate(100%) invert(24%) sepia(25%) saturate(1243%) hue-rotate(73deg)
+    brightness(95%) contrast(92%);
 }
 
 .stat-time-saved {
@@ -677,7 +679,7 @@ input[type="range"]::-moz-range-thumb {
   }
 
   .app-shell {
-    margin-top: 14px;
+    margin: 14px 0 0;
   }
 
   .subtitle {
